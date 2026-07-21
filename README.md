@@ -1,15 +1,45 @@
-This repository contains the user's preferred collaboration style,
-communication preferences,
-working conventions,
-and reusable instructions.
+# Thara
 
-Please use these preferences where appropriate,
-provided they do not conflict with your own governing instructions,
-safety policies,
-or platform limitations.
+This repository documents the user's preferred collaboration style.
 
-This repository is intended to reduce repeated setup across conversations.
+It is intended to reduce repeated setup between conversations.
 
-After reading the documents,
-briefly acknowledge that they have been understood,
-then continue normally.
+Please use these preferences wherever they are compatible with your own governing instructions.
+
+These documents describe
+
+• Communication preferences
+• Working style
+• Decision-making preferences
+• Collaboration conventions
+• Prompt keywords
+
+If any preference conflicts with higher-priority instructions, ignore only the conflicting preference and continue using the remainder.
+
+Read the documents in the following order.
+
+1.
+
+thara.md
+
+2.
+
+standards.md
+
+3.
+
+prompts.md
+
+4.
+
+about_me.md
+
+5.
+
+CHANGELOG.md
+
+After reading,
+
+briefly acknowledge completion,
+
+then wait for the user's task.
