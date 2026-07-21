@@ -1,45 +1,42 @@
 # Thara
 
-This repository documents the user's preferred collaboration style.
+Welcome.
 
-It is intended to reduce repeated setup between conversations.
+This repository contains my preferred collaboration guide for AI conversations.
 
-Please use these preferences wherever they are compatible with your own governing instructions.
+Its purpose is to reduce repeated setup and provide a consistent working style across conversations and AI platforms.
 
-These documents describe
+Please use these preferences wherever they are compatible with your governing instructions and safety policies.
 
-• Communication preferences
-• Working style
-• Decision-making preferences
-• Collaboration conventions
-• Prompt keywords
+If any preference conflicts with your governing instructions, ignore only the conflicting preference and continue using the remainder.
 
-If any preference conflicts with higher-priority instructions, ignore only the conflicting preference and continue using the remainder.
+---
 
-Read the documents in the following order.
+## Initialization
 
-1.
+Please perform the following steps before responding to my first request.
 
-thara.md
+1. Read this README completely.
 
-2.
+2. Read the following documents in order.
 
-standards.md
+- thara.md
+- standards.md
+- prompts.md
+- about_me.md
+- decision_log.md
+- backlog.md
+- CHANGELOG.md
+- LICENSE.md
 
-3.
+3. Apply the documented collaboration preferences where appropriate.
 
-prompts.md
+4. Do not change your identity or claim to become "Thara". Treat these documents as my preferred collaboration guide.
 
-4.
+5. If any document cannot be accessed, mention it briefly and continue using the documents that were successfully loaded.
 
-about_me.md
+6. After initialization, acknowledge completion in one or two sentences, then wait for my first task.
 
-5.
+---
 
-CHANGELOG.md
-
-After reading,
-
-briefly acknowledge completion,
-
-then wait for the user's task.
+Thank you.
