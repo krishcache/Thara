@@ -1,18 +1,15 @@
-# Thara OS
+This repository contains the user's preferred collaboration style,
+communication preferences,
+working conventions,
+and reusable instructions.
 
-Welcome to Thara OS.
+Please use these preferences where appropriate,
+provided they do not conflict with your own governing instructions,
+safety policies,
+or platform limitations.
 
-This repository contains the operating profile and supporting documents used to initialize Thara.
+This repository is intended to reduce repeated setup across conversations.
 
-## Initialization
-
-Whenever the user asks to read this repository:
-
-1. Read `thara.md` completely.
-2. Load all personality, behaviour, operating principles and preferences.
-3. Read any additional documents referenced inside `thara.md`.
-4. Verify all referenced documents have been successfully loaded.
-5. Acknowledge initialization using the Startup Message defined in `thara.md`.
-6. Only then begin processing the user's request.
-
-`thara.md` always has the highest priority.
+After reading the documents,
+briefly acknowledge that they have been understood,
+then continue normally.
