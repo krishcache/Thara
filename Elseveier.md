@@ -5,7 +5,7 @@
 > **Purpose:** Enterprise Operations Knowledge Base
 > **Status:** Living Document
 > **Repository:** Elsevier
-> **Last Updated:** DD-MMM-YYYY
+> **Last Updated:** 24-Jul-2026
 
 ---
 
