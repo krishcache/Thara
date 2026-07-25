@@ -1,105 +1,65 @@
 # Bookmaster_Reports.md
 
-# IBM Bookmaster Report Knowledge Base
-**Elsevier Australia – Report Catalogue & Extraction Guide**
+# IBM Bookmaster Reports
+### Elsevier Australia – Operational Report Catalogue
 
-Version: 1.0  
-Owner: Krishna Kumar  
-Status: Living Document
+Version: 2.0  
+Document Owner: Krishna Kumar  
+Status: Active  
+Last Updated: Jul-2026
 
 ---
 
 # Purpose
 
-This document contains the detailed documentation for every operational Bookmaster report used by Elsevier Australia.
+This document serves as the operational reference for all IBM Bookmaster reports used by Elsevier Australia.
 
-Each report documents:
+It documents:
 
+- Report information
 - Business purpose
-- Navigation path
-- Menu option
-- BM Display Name
-- Actual Extract Report
-- Parameters
-- Extraction route
-- Output folder
-- Naming convention
-- Frequency
+- Bookmaster navigation
+- Typical report input
+- Destination staging folder
+- File naming convention
 - Business notes
-- Related reports
-- Automation status
 
-This document is the operational reference for both manual and automated report extraction.
+The objective is to provide a quick operational reference for manually running reports and supporting future automation through ORION.
 
 ---
 
 # Relationship
 
-Refer to **Bookmaster.md** for:
+This document should be read together with the following knowledge bases.
 
-- Bookmaster overview
-- Navigation hierarchy
-- Business rules
-- Report classification
-- Active / Parked / Ignored summary
-- ERP knowledge
+| Document | Purpose |
+|----------|---------|
+| Bookmaster.md | IBM Bookmaster application overview, menus, screens and business processes |
+| ORION.md | Silent extraction framework, automation, Python, VBS, Scheduler, SQL and ETL logic |
 
 ---
 
-# Report Documentation Standard
+# Standard Report Extraction Process
 
-Every report follows the same structure.
-
----
-
-## Report Information
-
-| Field | Value |
-|------|------|
-| Screen | |
-| Menu Option | |
-| BM Display Name | |
-| Actual Extract Report | |
-| Category | |
-| Status | |
-| Frequency | |
-| Parameters | |
-| Output Format | Excel |
-| Business Owner | Inventory Management |
-
----
-
-## Business Purpose
-
-Describe why the report exists and how the business uses it.
-
----
-
-## Navigation
+Unless otherwise specified, every Bookmaster report follows the same extraction process.
 
 Bookmaster
 
 ↓
 
-Screen
+Navigate to the required Screen
 
 ↓
 
-Menu Option
+Select the required Menu Option
+
+↓
+
+Enter the required report input (if applicable)
 
 ↓
 
 Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Execute Report
 
 ↓
 
@@ -107,173 +67,178 @@ IBM Data Transfer
 
 ↓
 
-Actual Extract Report
+Export to Microsoft Excel
 
 ↓
 
-Excel
+Save into the designated Staging Folder
+
+---
+
+# Report Staging Strategy
+
+The extracted reports are **not** intended for permanent storage.
+
+Instead, they are stored temporarily in dedicated staging folders based on business frequency.
+
+The staging folders act as an intermediate layer between IBM Bookmaster and downstream ORION automation.
+
+---
+
+## Staging Folder Structure
+
+| Folder | Purpose |
+|---------|---------|
+| Daily | Reports extracted once per day |
+| Weekly | Reports extracted weekly |
+| Monthly | Reports extracted once per accounting period |
+| Continuous | Operational reports extracted multiple times throughout the day or on-demand |
+| Archive *(Future)* | Long-term storage if required |
+
+---
+
+## Staging Workflow
+
+IBM Bookmaster
 
 ↓
 
-Destination Folder
+Report Extraction
+
+↓
+
+Staging Folder
+
+↓
+
+ORION Processing
+
+↓
+
+Database / Dashboard
+
+↓
+
+Delete Processed Report
 
 ---
 
-## Parameters
+## Staging Behaviour
 
-Document every required input.
-
-Examples:
-
-- Accounting Period
-- Date
-- Date Range
-- Shipment Number
-- Purchase Order
-- ISBN
-- Warehouse
-- Customer
-- Supplier
+- Reports are temporarily stored in their designated staging folders.
+- ORION reads reports from the staging folders according to the scheduled frequency.
+- Processed data is appended or updated in the destination database.
+- Successfully processed report files are automatically deleted.
+- Staging folders should only contain reports awaiting processing.
 
 ---
 
-## Destination Folder
+# File Naming Convention
 
-Record the standard destination folder.
-
-Examples
-
-Daily
-
-Weekly
-
-Monthly
-
-Hourly
-
-Archive
-
----
-
-## File Naming Convention
-
-Examples
+All extracted reports shall follow the standard naming convention.
 
 ```
-E00046_YYYYMMDD.xlsx
-
-LIGARE4_YYYYMMDD_HHMMSS.xlsx
+<ReportName>_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
+```
+E00046_25-Jul-26_091530.xlsx
+```
 
-Manual
-
-Supported
-
-Automated
-
-Production
+This format is designed for easy human readability while remaining unique for automation.
 
 ---
 
-## Business Notes
+# Report Input Standards
 
-Business-specific observations.
+Typical report inputs currently used within Bookmaster.
 
----
+| Input Type | Example | Description |
+|------------|---------|-------------|
+| Accounting Period | `202606` | Single accounting period |
+| Date Range | `2026-06-01 2026-06-30` | From Date → To Date |
+| Same Period | `202606 202606` | From Period → To Period (Single Month) |
+| Period Range | `202507 202606` | From Period → To Period (Multiple Months) |
+| No Input | `None` | Report executes without user input |
 
-## Related Reports
+The values above represent the **typical** inputs entered when running the report.
 
-Document reports that are commonly used together.
-
----
-
-# Report Index
-
-## Screen 52
-
-31. E0012
-32. E0012B
-33. E0013A
-34. E0015
-35. E0016A
-36. EOM96A
-37. E00112A
-38. E00113
-39. E00114
-40. E00115
-41. E00116
-42. E00123A
-43. EOM38E5
-44. E00118
-45. E00002
-46. E00046
-47. E00047
+Specific report input requirements are documented within each report section.
 
 ---
 
-## Screen 53
+# Report Catalogue
+# Report Catalogue
 
-48. EOM92
-49. EOM92A
-50. EOM92B
-51. EOM92C
+## Screen 52 – Inventory Reports
 
----
-
-## Screen 54
-
-52. EOD06A
-53. E00103
-54. E00110
-
----
-
-## Screen 90
-
-55. EOD12
-56. E00031A
-57. NYP Order Report
-58. E00082
-59. E00082A
-60. Backorder & Fwd Order Summary
-61. EOM70C
-62. E00075
-63. E00075A
-64. E00102
-65. E00102A
-66. E00124
-67. LIGARE4
-68. E00120C
-69. SLOWSTK2
-70. E00120B
+| No. | BM Report | Actual Extract Report | Report Name | Category | Default Staging Folder |
+|----:|-----------|-----------------------|-------------|----------|------------------------|
+| 31 | E0012 | E0012 | FORECASTING - Receipts | Forecasting | Monthly |
+| 32 | E0012B | E0012B | FORECASTING - Receipts (AIR) | Forecasting | Monthly |
+| 33 | E0013A | E0013A | TRANSACTIONS LOCAL | Inventory | Monthly |
+| 34 | E0015 | E0015 | SALES TO INV 1 | Sales | Monthly |
+| 35 | E0016 | E0016A | SALES TO INV 2 | Sales | Monthly |
+| 36 | EOM96A | EOM96A | Backorders $ | Inventory | Monthly |
+| 37 | E00112A | E00112A | First Fill Rate | KPI | Monthly |
+| 38 | E00113 | E00113 | Warehouse Data | Inventory | Monthly |
+| 39 | E00114 | E00114 | ISBN13 | Master Data | Monthly |
+| 40 | E00115 | E00115 | Stock Mvmt Returns | Inventory | Monthly |
+| 41 | E00116 | E00116 | Purchase Order | Purchasing | Monthly |
+| 42 | E00123A | E00123A | OTO Report | Operations | Monthly |
+| 43 | EOM38E5 | EOM38E5 | LLP Replenishment | Inventory | Monthly |
+| 44 | E00118 | E00118 | B/O This Period | Inventory | Monthly |
+| 45 | E00002 | E00002 | Sales Customer By ISBN | Sales | Monthly |
+| 46 | E00046 | E00046 | POD Customer Transactions | POD | Monthly |
+| 47 | E00047 | E00047 | POD Orders | POD | Monthly |
 
 ---
 
-# Future Reports
+## Screen 53 – Pricing Reports
 
-Append all newly introduced Bookmaster reports below without renumbering existing reports.
-
-71.
-
-72.
-
-73.
-
-74.
-
-75.
-
-...
+| No. | BM Report | Actual Extract Report | Report Name | Category | Default Staging Folder |
+|----:|-----------|-----------------------|-------------|----------|------------------------|
+| 48 | EOM92 | EOM92 | HS AUD Prices | Pricing | Monthly |
+| 49 | EOM92A | EOM92A | S&T AUD Price File | Pricing | Monthly |
+| 50 | EOM92B | EOM92B | HS NZD Prices | Pricing | Monthly |
+| 51 | EOM92C | EOM92C | S&T NZD Prices | Pricing | Monthly |
 
 ---
 
-**End of Framework**
+## Screen 54 – Customer Service Reports
 
-The following sections (31 onwards) will contain one complete page for each report using the standard structure defined above.
+| No. | BM Report | Actual Extract Report | Report Name | Category | Default Staging Folder |
+|----:|-----------|-----------------------|-------------|----------|------------------------|
+| 52 | EOD06A | EOD06A | OP Report | Customer Service | Monthly |
+| 53 | E00103 | E00103 | OS Report | Customer Service | Monthly |
+| 54 | E00110 | E00110 | Unapproved | Customer Service | Monthly |
+
+---
+
+## Screen 90 – Operations & Warehouse Reports
+
+| No. | BM Report | Actual Extract Report | Report Name | Category | Default Staging Folder |
+|----:|-----------|-----------------------|-------------|----------|------------------------|
+| 55 | EOD12 | EOD12 | Shrinkwrap Report | Operations | Monthly |
+| 56 | E00031A | E00031A | Purchase Orders | Purchasing | Monthly |
+| 57 | NYP Order Report | NYP Order Report | NYP Order Report | Publishing | Monthly |
+| 58 | E00082 | E00082 | PO Details | Purchasing | Monthly |
+| 59 | E00082A | E00082A | O/S PO's POD | POD | Weekly |
+| 60 | Backorder & Fwd Order Summary | Backorder & Fwd Order Summary | Backorder & Fwd Order Summary | Inventory | Monthly |
+| 61 | EOM70C | EOM70C | STK Analysis HS | Inventory | Monthly |
+| 62 | E00075 | E00075 | Freight Calc | Freight | Continuous |
+| 63 | E00075A | E00075A | Freight Calc Detail | Freight | Continuous |
+| 64 | E00102 | E00102 | Title Listing | Master Data | Monthly |
+| 65 | E00102A | E00102A | Publication Date Report | Publishing | Monthly |
+| 66 | E00124 | E00124 | Title Master File | Master Data | Weekly |
+| 67 | LIGARE4 | LIGARE4 | SOHQ by Location | Warehouse | Daily *(Planned)* |
+| 68 | E00120C | E00120C | Stock POD Titles | POD | Weekly |
+| 69 | SLOWSTK2 | SLOWSTK2 | Slow Moving Stock | Inventory | Monthly |
+| 70 | E00120B | E00120B | Titles Stock On Hand | Inventory | Monthly |
+
+---
 # 31. E0012 – FORECASTING - Receipts
 
 ## Report Information
@@ -282,12 +247,11 @@ The following sections (31 onwards) will contain one complete page for each repo
 |------|------|
 | Screen | 52 |
 | Menu Option | 1 |
-| BM Display Name | FORECASTING - Receipts |
+| BM Report | E0012 |
 | Actual Extract Report | E0012 |
 | Category | Forecasting |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -295,105 +259,55 @@ The following sections (31 onwards) will contain one complete page for each repo
 
 ## Business Purpose
 
-Forecast receipts into the warehouse.
+Forecast incoming warehouse receipts for purchasing and inventory planning.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 1
-
-↓
-
-FORECASTING - Receipts
-
-↓
-
-Run Report
+```
+52 → 1
+```
 
 ---
 
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
+## Report Input
 
 ```
-E0012
+2026-06-01 2026-06-30
 ```
 
-↓
-
-Excel
-
-↓
-
-Destination Folder
+Example
 
 ```
+01-Jun-2026 to 30-Jun-2026
+```
+
+---
+
+## Destination Staging Folder
+
 Monthly
-```
-
----
-
-## Parameters
-
-To be documented.
-
----
-
-## Destination Folder
-
-```
-BookMaster\Monthly
-```
 
 ---
 
 ## File Naming Convention
 
 ```
-E0012_YYYYMMDD.xlsx
+E0012_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E0012_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-To be documented.
-
----
-
-## Related Reports
-
-- E0012B
-- E00113
-- E00118
+Used during monthly purchasing and inventory forecasting.
 
 ---
 
@@ -405,12 +319,11 @@ To be documented.
 |------|------|
 | Screen | 52 |
 | Menu Option | 27 |
-| BM Display Name | FORECASTING - Receipts (AIR) |
+| BM Report | E0012B |
 | Actual Extract Report | E0012B |
 | Category | Forecasting |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -418,105 +331,50 @@ To be documented.
 
 ## Business Purpose
 
-Forecast receipts for Air Freight orders.
+Forecast incoming Air Freight receipts for purchasing and inventory planning.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 27
-
-↓
-
-FORECASTING - Receipts (AIR)
-
-↓
-
-Run Report
+```
+52 → 27
+```
 
 ---
 
-## Extraction Route
+## Report Input
 
-Bookmaster
+None
 
-↓
+---
 
-Run Report
+## Destination Staging Folder
 
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
-```
-E0012B
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
 Monthly
-```
-
----
-
-## Parameters
-
-To be documented.
-
----
-
-## Destination Folder
-
-```
-BookMaster\Monthly
-```
 
 ---
 
 ## File Naming Convention
 
 ```
-E0012B_YYYYMMDD.xlsx
+E0012B_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E0012B_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-To be documented.
+Specialised forecasting report for Air Freight receipts.
 
 ---
 
-## Related Reports
-
-- E0012
-- E00118
-```
 # 33. E0013A – TRANSACTIONS LOCAL
 
 ## Report Information
@@ -525,12 +383,11 @@ To be documented.
 |------|------|
 | Screen | 52 |
 | Menu Option | 3 |
-| BM Display Name | TRANSACTIONS LOCAL |
+| BM Report | E0013A |
 | Actual Extract Report | E0013A |
-| Category | KPI |
+| Category | Inventory |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -538,108 +395,57 @@ To be documented.
 
 ## Business Purpose
 
-Transaction report for local inventory movements.
+Provides local inventory transaction history for reconciliation and operational analysis.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 3
-
-↓
-
-TRANSACTIONS LOCAL
-
-↓
-
-Run Report
+```
+52 → 3
+```
 
 ---
 
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
+## Report Input
 
 ```
-E0013A
+202606 202606
 ```
 
-↓
-
-Excel
-
-↓
-
-Destination Folder
+Example
 
 ```
+From Jun-2026 to Jun-2026
+```
+
+---
+
+## Destination Staging Folder
+
 Monthly
-```
-
----
-
-## Parameters
-
-To be documented.
-
----
-
-## Destination Folder
-
-```
-BookMaster\Monthly
-```
 
 ---
 
 ## File Naming Convention
 
 ```
-E0013A_YYYYMMDD.xlsx
+E0013A_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E0013A_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Same extract report is also used by **TRANSACTIONS DIST**.
+Used to analyse local inventory transactions for the selected accounting period.
 
 ---
-
-## Related Reports
-
-- TRANSACTIONS DIST
-- E00112A
-- E00115
-
----
-
 # 34. E0015 – SALES TO INV 1
 
 ## Report Information
@@ -648,12 +454,11 @@ Same extract report is also used by **TRANSACTIONS DIST**.
 |------|------|
 | Screen | 52 |
 | Menu Option | 5 |
-| BM Display Name | SALES TO INV 1 |
+| BM Report | E0015 |
 | Actual Extract Report | E0015 |
 | Category | Sales |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -661,108 +466,59 @@ Same extract report is also used by **TRANSACTIONS DIST**.
 
 ## Business Purpose
 
-Sales to Inventory reporting.
+Provides Sales to Inventory analysis for the selected accounting period.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 5
-
-↓
-
-SALES TO INV 1
-
-↓
-
-Run Report
+```
+52 → 5
+```
 
 ---
 
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
+## Report Input
 
 ```
-E0015
+202606
 ```
 
-↓
-
-Excel
-
-↓
-
-Destination Folder
+Example
 
 ```
+Jun-2026
+```
+
+---
+
+## Destination Staging Folder
+
 Monthly
-```
-
----
-
-## Parameters
-
-To be documented.
-
----
-
-## Destination Folder
-
-```
-BookMaster\Monthly
-```
 
 ---
 
 ## File Naming Convention
 
 ```
-E0015_YYYYMMDD.xlsx
+E0015_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E0015_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-To be documented.
+Used for monthly Sales versus Inventory analysis.
 
 ---
 
-## Related Reports
-
-- E0016A
-- E0013A
-
----
-
-# 35. E0016A – SALES TO INV 2
+# 35. E0016 – SALES TO INV 2
 
 ## Report Information
 
@@ -770,12 +526,11 @@ To be documented.
 |------|------|
 | Screen | 52 |
 | Menu Option | 6 |
-| BM Display Name | SALES TO INV 2 |
+| BM Report | E0016 |
 | Actual Extract Report | E0016A |
 | Category | Sales |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -783,108 +538,58 @@ To be documented.
 
 ## Business Purpose
 
-Sales to Inventory reporting (Part 2).
+Continuation of the Sales to Inventory reporting used for inventory planning and sales analysis.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 6
-
-↓
-
-SALES TO INV 2
-
-↓
-
-Run Report
+```
+52 → 6
+```
 
 ---
 
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
+## Report Input
 
 ```
-E0016A
+202606
 ```
 
-↓
-
-Excel
-
-↓
-
-Destination Folder
+Example
 
 ```
+Jun-2026
+```
+
+---
+
+## Destination Staging Folder
+
 Monthly
-```
-
----
-
-## Parameters
-
-To be documented.
-
----
-
-## Destination Folder
-
-```
-BookMaster\Monthly
-```
 
 ---
 
 ## File Naming Convention
 
 ```
-E0016A_YYYYMMDD.xlsx
+E0016A_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E0016A_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Bookmaster menu displays **E0016**.
-
-IBM Data Transfer extraction uses **E0016A**.
-
-Always use **E0016A** for automation.
+Bookmaster report is **E0016**, while IBM Data Transfer extracts **E0016A**.
 
 ---
 
-## Related Reports
-
-- E0015
-- E0013A
 # 36. EOM96A – Backorders $
 
 ## Report Information
@@ -893,12 +598,11 @@ Always use **E0016A** for automation.
 |------|------|
 | Screen | 52 |
 | Menu Option | 7 |
-| BM Display Name | Backorders $ |
+| BM Report | EOM96A |
 | Actual Extract Report | EOM96A |
 | Category | Inventory |
 | Status | Active |
-| Frequency | As Required |
-| Parameters | Refer to Bookmaster |
+| Frequency | Monthly |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -906,99 +610,57 @@ Always use **E0016A** for automation.
 
 ## Business Purpose
 
-Provides the dollar value of current backorders.
+Provides the total customer backorder value for the selected accounting period.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 7
-
-↓
-
-Backorders $
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-EOM96A
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+52 → 7
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+```
+202606
+```
+
+Example
+
+```
+Jun-2026
+```
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-EOM96A_YYYYMMDD.xlsx
+EOM96A_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+EOM96A_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Used for inventory backlog monitoring.
+Used for monthly management reporting and inventory review.
 
 ---
-
-## Related Reports
-
-- E00118
-- E00112A
-
----
-
 # 37. E00112A – First Fill Rate
 
 ## Report Information
@@ -1007,12 +669,11 @@ Used for inventory backlog monitoring.
 |------|------|
 | Screen | 52 |
 | Menu Option | 8 |
-| BM Display Name | First Fill Rate |
+| BM Report | E00112A |
 | Actual Extract Report | E00112A |
 | Category | KPI |
 | Status | Active |
 | Frequency | Monthly |
-| Parameters | Accounting Period |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -1020,106 +681,57 @@ Used for inventory backlog monitoring.
 
 ## Business Purpose
 
-Measures first fill rate performance for inventory KPI reporting.
+Measures the First Fill Rate KPI for the selected reporting period.
+
+Used for monthly inventory performance reporting and management review.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 8
-
-↓
-
-First Fill Rate
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Enter Accounting Period
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00112A
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+52 → 8
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-Accounting Period
+```
+2026-06-01 2026-06-30
+```
 
 Example
 
 ```
-202607
+01-Jun-2026 to 30-Jun-2026
 ```
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00112A_YYYYMMDD.xlsx
+E00112A_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00112A_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Primary KPI report for Fill Rate calculations.
-
----
-
-## Related Reports
-
-- E0013A
-- EOM96A
+Primary KPI report used to measure First Fill Rate performance.
 
 ---
 
@@ -1131,122 +743,11 @@ Primary KPI report for Fill Rate calculations.
 |------|------|
 | Screen | 52 |
 | Menu Option | 9 |
-| BM Display Name | Warehouse Data |
+| BM Report | E00113 |
 | Actual Extract Report | E00113 |
-| Category | Warehouse |
-| Status | Active |
-| Frequency | As Required |
-| Parameters | Refer to Bookmaster |
-| Output Format | Excel |
-| Business Owner | Inventory Management |
-
----
-
-## Business Purpose
-
-Warehouse operational reporting.
-
----
-
-## Navigation
-
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 9
-
-↓
-
-Warehouse Data
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
-```
-E00113
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
-```
-
----
-
-## Parameters
-
-To be documented.
-
----
-
-## File Naming Convention
-
-```
-E00113_YYYYMMDD.xlsx
-```
-
----
-
-## Automation Status
-
-Supported
-
----
-
-## Business Notes
-
-Supports warehouse operational analysis.
-
----
-
-## Related Reports
-
-- LIGARE4
-- E00120B# 36. EOM96A – Backorders $
-
-## Report Information
-
-| Field | Value |
-|------|------|
-| Screen | 52 |
-| Menu Option | 7 |
-| BM Display Name | Backorders $ |
-| Actual Extract Report | EOM96A |
 | Category | Inventory |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -1254,682 +755,58 @@ Supports warehouse operational analysis.
 
 ## Business Purpose
 
-Provides the dollar value of current backorders.
+Provides warehouse operational data for inventory analysis and reconciliation.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 7
-
-↓
-
-Backorders $
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-EOM96A
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+52 → 9
 ```
 
 ---
 
-## Parameters
-
-To be documented.
-
----
-
-## File Naming Convention
+## Report Input
 
 ```
-EOM96A_YYYYMMDD.xlsx
+202606
 ```
-
----
-
-## Automation Status
-
-Supported
-
----
-
-## Business Notes
-
-Used for inventory backlog monitoring.
-
----
-
-## Related Reports
-
-- E00118
-- E00112A
-
----
-
-# 37. E00112A – First Fill Rate
-
-## Report Information
-
-| Field | Value |
-|------|------|
-| Screen | 52 |
-| Menu Option | 8 |
-| BM Display Name | First Fill Rate |
-| Actual Extract Report | E00112A |
-| Category | KPI |
-| Status | Active |
-| Frequency | Monthly |
-| Parameters | Accounting Period |
-| Output Format | Excel |
-| Business Owner | Inventory Management |
-
----
-
-## Business Purpose
-
-Measures first fill rate performance for inventory KPI reporting.
-
----
-
-## Navigation
-
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 8
-
-↓
-
-First Fill Rate
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Enter Accounting Period
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
-```
-E00112A
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
-```
-
----
-
-## Parameters
-
-Accounting Period
 
 Example
 
 ```
-202607
+Jun-2026
 ```
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00112A_YYYYMMDD.xlsx
+E00113_dd-MMM-yy_HHmmss.xlsx
 ```
-
----
-
-## Automation Status
-
-Supported
-
----
-
-## Business Notes
-
-Primary KPI report for Fill Rate calculations.
-
----
-
-## Related Reports
-
-- E0013A
-- EOM96A
-
----
-
-# 38. E00113 – Warehouse Data
-
-## Report Information
-
-| Field | Value |
-|------|------|
-| Screen | 52 |
-| Menu Option | 9 |
-| BM Display Name | Warehouse Data |
-| Actual Extract Report | E00113 |
-| Category | Warehouse |
-| Status | Active |
-| Frequency | As Required |
-| Parameters | Refer to Bookmaster |
-| Output Format | Excel |
-| Business Owner | Inventory Management |
-
----
-
-## Business Purpose
-
-Warehouse operational reporting.
-
----
-
-## Navigation
-
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 9
-
-↓
-
-Warehouse Data
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
-```
-E00113
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
-```
-
----
-
-## Parameters
-
-To be documented.
-
----
-
-## File Naming Convention
-
-```
-E00113_YYYYMMDD.xlsx
-```
-
----
-
-## Automation Status
-
-Supported
-
----
-
-## Business Notes
-
-Supports warehouse operational analysis.
-
----
-
-## Related Reports
-
-- LIGARE4
-# 36. EOM96A – Backorders $
-
-## Report Information
-
-| Field | Value |
-|------|------|
-| Screen | 52 |
-| Menu Option | 7 |
-| BM Display Name | Backorders $ |
-| Actual Extract Report | EOM96A |
-| Category | Inventory |
-| Status | Active |
-| Frequency | As Required |
-| Parameters | Refer to Bookmaster |
-| Output Format | Excel |
-| Business Owner | Inventory Management |
-
----
-
-## Business Purpose
-
-Provides the dollar value of current backorders.
-
----
-
-## Navigation
-
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 7
-
-↓
-
-Backorders $
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
-```
-EOM96A
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
-```
-
----
-
-## Parameters
-
-To be documented.
-
----
-
-## File Naming Convention
-
-```
-EOM96A_YYYYMMDD.xlsx
-```
-
----
-
-## Automation Status
-
-Supported
-
----
-
-## Business Notes
-
-Used for inventory backlog monitoring.
-
----
-
-## Related Reports
-
-- E00118
-- E00112A
-
----
-
-# 37. E00112A – First Fill Rate
-
-## Report Information
-
-| Field | Value |
-|------|------|
-| Screen | 52 |
-| Menu Option | 8 |
-| BM Display Name | First Fill Rate |
-| Actual Extract Report | E00112A |
-| Category | KPI |
-| Status | Active |
-| Frequency | Monthly |
-| Parameters | Accounting Period |
-| Output Format | Excel |
-| Business Owner | Inventory Management |
-
----
-
-## Business Purpose
-
-Measures first fill rate performance for inventory KPI reporting.
-
----
-
-## Navigation
-
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 8
-
-↓
-
-First Fill Rate
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Enter Accounting Period
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
-```
-E00112A
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
-```
-
----
-
-## Parameters
-
-Accounting Period
 
 Example
 
 ```
-202607
+E00113_30-Jun-26_091530.xlsx
 ```
-
----
-
-## File Naming Convention
-
-```
-E00112A_YYYYMMDD.xlsx
-```
-
----
-
-## Automation Status
-
-Supported
 
 ---
 
 ## Business Notes
 
-Primary KPI report for Fill Rate calculations.
+Supports warehouse inventory analysis and operational reporting.
 
 ---
 
-## Related Reports
-
-- E0013A
-- EOM96A
-
----
-
-# 38. E00113 – Warehouse Data
-
-## Report Information
-
-| Field | Value |
-|------|------|
-| Screen | 52 |
-| Menu Option | 9 |
-| BM Display Name | Warehouse Data |
-| Actual Extract Report | E00113 |
-| Category | Warehouse |
-| Status | Active |
-| Frequency | As Required |
-| Parameters | Refer to Bookmaster |
-| Output Format | Excel |
-| Business Owner | Inventory Management |
-
----
-
-## Business Purpose
-
-Warehouse operational reporting.
-
----
-
-## Navigation
-
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 9
-
-↓
-
-Warehouse Data
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
-```
-E00113
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
-```
-
----
-
-## Parameters
-
-To be documented.
-
----
-
-## File Naming Convention
-
-```
-E00113_YYYYMMDD.xlsx
-```
-
----
-
-## Automation Status
-
-Supported
-
----
-
-## Business Notes
-
-Supports warehouse operational analysis.
-
----
-
-## Related Reports
-
-- LIGARE4
-- E00120B
 # 39. E00114 – ISBN13
 
 ## Report Information
@@ -1938,12 +815,11 @@ Supports warehouse operational analysis.
 |------|------|
 | Screen | 52 |
 | Menu Option | 10 |
-| BM Display Name | ISBN13 |
+| BM Report | E00114 |
 | Actual Extract Report | E00114 |
 | Category | Master Data |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -1951,100 +827,51 @@ Supports warehouse operational analysis.
 
 ## Business Purpose
 
-Provides ISBN-13 reference information for Bookmaster titles.
+Provides ISBN-13 reference information for title master data validation.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 10
-
-↓
-
-ISBN13
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00114
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+52 → 10
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00114_YYYYMMDD.xlsx
+E00114_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00114_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Reference report used for title master information.
+Reference report used for title master data verification.
 
 ---
 
-## Related Reports
-
-- E00124
-- E00102
-
----
-
-# 40. E00115 – Stock Movement Returns
+# 40. E00115 – Stock Mvmt Returns
 
 ## Report Information
 
@@ -2052,12 +879,11 @@ Reference report used for title master information.
 |------|------|
 | Screen | 52 |
 | Menu Option | 11 |
-| BM Display Name | Stock Movement Returns |
+| BM Report | E00115 |
 | Actual Extract Report | E00115 |
 | Category | Inventory |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -2065,99 +891,57 @@ Reference report used for title master information.
 
 ## Business Purpose
 
-Reports inventory stock movements and returns.
+Provides stock movement and returns information for inventory reconciliation and analysis.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 11
-
-↓
-
-Stock Movement Returns
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00115
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+52 → 11
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+```
+202606
+```
+
+Example
+
+```
+Jun-2026
+```
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00115_YYYYMMDD.xlsx
+E00115_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00115_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Supports inventory movement reconciliation.
+Used to analyse stock movements and returns for the selected accounting period.
 
 ---
-
-## Related Reports
-
-- E00118
-- E00113
-
----
-
 # 41. E00116 – Purchase Order
 
 ## Report Information
@@ -2166,12 +950,11 @@ Supports inventory movement reconciliation.
 |------|------|
 | Screen | 52 |
 | Menu Option | 12 |
-| BM Display Name | Purchase Order |
+| BM Report | E00116 |
 | Actual Extract Report | E00116 |
 | Category | Purchasing |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -2179,97 +962,55 @@ Supports inventory movement reconciliation.
 
 ## Business Purpose
 
-Purchase order reporting for inventory replenishment.
+Provides Purchase Order information for purchasing activities and inventory replenishment.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 12
-
-↓
-
-Purchase Order
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00116
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+52 → 12
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+```
+2026-06-01 2026-06-30
+```
+
+Example
+
+```
+01-Jun-2026 to 30-Jun-2026
+```
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00116_YYYYMMDD.xlsx
+E00116_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00116_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Used for purchase planning and supplier order review.
-
----
-
-## Related Reports
-
-- E00031A
-- E00082
-- E00082A
+Used for Purchase Order monitoring and inventory replenishment.
 
 ---
 
@@ -2281,12 +1022,11 @@ Used for purchase planning and supplier order review.
 |------|------|
 | Screen | 52 |
 | Menu Option | 14 |
-| BM Display Name | OTO Report |
+| BM Report | E00123A |
 | Actual Extract Report | E00123A |
 | Category | Operations |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -2294,96 +1034,50 @@ Used for purchase planning and supplier order review.
 
 ## Business Purpose
 
-Operational reporting for Order-to-Order activities.
+Provides operational reporting for Order-to-Order (OTO) activities.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 14
-
-↓
-
-OTO Report
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00123A
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+52 → 14
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00123A_YYYYMMDD.xlsx
+E00123A_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00123A_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Supports operational order analysis.
+Supports operational reporting and internal business analysis.
 
 ---
 
-## Related Reports
-
-- E00116
-- E00082
 # 43. EOM38E5 – LLP Replenishment
 
 ## Report Information
@@ -2392,12 +1086,11 @@ Supports operational order analysis.
 |------|------|
 | Screen | 52 |
 | Menu Option | 23 |
-| BM Display Name | LLP Replenishment |
+| BM Report | EOM38E5 |
 | Actual Extract Report | EOM38E5 |
 | Category | Inventory |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -2405,96 +1098,47 @@ Supports operational order analysis.
 
 ## Business Purpose
 
-Supports replenishment planning for LLP inventory.
+Supports LLP inventory replenishment planning.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 23
-
-↓
-
-LLP Replenishment
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-EOM38E5
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+52 → 23
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-EOM38E5_YYYYMMDD.xlsx
+EOM38E5_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+EOM38E5_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Supports LLP replenishment planning.
-
----
-
-## Related Reports
-
-- E00116
-- E00118
+Used to determine LLP replenishment requirements.
 
 ---
 
@@ -2506,12 +1150,11 @@ Supports LLP replenishment planning.
 |------|------|
 | Screen | 52 |
 | Menu Option | 24 |
-| BM Display Name | B/O This Period |
+| BM Report | E00118 |
 | Actual Extract Report | E00118 |
 | Category | Inventory |
 | Status | Active |
 | Frequency | Monthly |
-| Parameters | Accounting Period |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -2519,103 +1162,57 @@ Supports LLP replenishment planning.
 
 ## Business Purpose
 
-Lists backorders created during the selected accounting period.
+Provides customer backorders created during the selected accounting period.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 24
-
-↓
-
-B/O This Period
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Enter Accounting Period
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00118
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+52 → 24
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-Accounting Period
+```
+202606
+```
+
+Example
+
+```
+Jun-2026
+```
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00118_YYYYMMDD.xlsx
+E00118_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00118_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Used during monthly inventory review and KPI reporting.
+Monthly backorder report used for inventory planning and management reporting.
 
 ---
-
-## Related Reports
-
-- EOM96A
-- E00112A
-
----
-
 # 45. E00002 – Sales Customer By ISBN
 
 ## Report Information
@@ -2624,12 +1221,11 @@ Used during monthly inventory review and KPI reporting.
 |------|------|
 | Screen | 52 |
 | Menu Option | 26 |
-| BM Display Name | Sales Customer By ISBN |
+| BM Report | E00002 |
 | Actual Extract Report | E00002 |
 | Category | Sales |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -2637,96 +1233,47 @@ Used during monthly inventory review and KPI reporting.
 
 ## Business Purpose
 
-Provides customer sales information by ISBN.
+Provides customer sales information by ISBN for sales analysis and inventory planning.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 26
-
-↓
-
-Sales Customer By ISBN
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00002
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+52 → 26
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00002_YYYYMMDD.xlsx
+E00002_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00002_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Useful for customer-specific sales analysis.
-
----
-
-## Related Reports
-
-- E0015
-- E0016A
+Used for customer sales analysis by ISBN.
 
 ---
 
@@ -2738,12 +1285,11 @@ Useful for customer-specific sales analysis.
 |------|------|
 | Screen | 52 |
 | Menu Option | 30 |
-| BM Display Name | POD Cust Trans |
+| BM Report | E00046 |
 | Actual Extract Report | E00046 |
 | Category | POD |
 | Status | Active |
-| Frequency | Daily |
-| Parameters | Refer to Bookmaster |
+| Frequency | As Required |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -2751,100 +1297,50 @@ Useful for customer-specific sales analysis.
 
 ## Business Purpose
 
-Primary transaction report for Print-on-Demand customer orders.
+Provides POD customer transaction history for operational analysis and POD reporting.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 30
-
-↓
-
-POD Cust Trans
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00046
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Daily
+52 → 30
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00046_YYYYMMDD.xlsx
+E00046_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Production
+```
+E00046_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Primary source for POD transaction history.
-
-Mapped extensively within ORION.
+Primary source for POD customer transaction data used by ORION.
 
 ---
 
-## Related Reports
-
-- E00047
-- E00082A
-
-- E00120B
 # 47. E00047 – POD Orders
 
 ## Report Information
@@ -2853,12 +1349,11 @@ Mapped extensively within ORION.
 |------|------|
 | Screen | 52 |
 | Menu Option | 31 |
-| BM Display Name | POD Orders |
+| BM Report | E00047 |
 | Actual Extract Report | E00047 |
 | Category | POD |
 | Status | Active |
-| Frequency | Daily |
-| Parameters | Refer to Bookmaster |
+| Frequency | As Required |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -2866,104 +1361,49 @@ Mapped extensively within ORION.
 
 ## Business Purpose
 
-Primary operational report containing all Print-on-Demand purchase orders created within Bookmaster.
+Provides POD order details for operational monitoring and POD dashboard reporting.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 52
-
-↓
-
-Option 31
-
-↓
-
-POD Orders
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00047
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Daily
+52 → 31
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00047_YYYYMMDD.xlsx
+E00047_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Production
+```
+E00047_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Primary report used for POD operational monitoring.
-
-Contains supplier information, customer information, order dates and POD order details.
-
-Forms one of the core reports used by ORION.
+Primary source for POD order information used by ORION and the POD Control Center.
 
 ---
-
-## Related Reports
-
-- E00046
-- E00082A
-- LIGARE4
-
----
-
 # 48. EOM92 – HS AUD Prices
 
 ## Report Information
@@ -2971,13 +1411,12 @@ Forms one of the core reports used by ORION.
 | Field | Value |
 |------|------|
 | Screen | 53 |
-| Menu Option | 40 |
-| BM Display Name | HS AUD Prices |
+| Menu Option | 1 |
+| BM Report | EOM92 |
 | Actual Extract Report | EOM92 |
 | Category | Pricing |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -2985,97 +1424,47 @@ Forms one of the core reports used by ORION.
 
 ## Business Purpose
 
-Price list for Higher Education titles in Australian Dollars.
+Provides Higher Education AUD price data.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 53
-
-↓
-
-Option 40
-
-↓
-
-HS AUD Prices
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-EOM92
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+53 → 1
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-EOM92_YYYYMMDD.xlsx
+EOM92_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+EOM92_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Pricing reference report.
-
----
-
-## Related Reports
-
-- EOM92A
-- EOM92B
-- EOM92C
+Used for Higher Education pricing reference.
 
 ---
 
@@ -3086,13 +1475,12 @@ Pricing reference report.
 | Field | Value |
 |------|------|
 | Screen | 53 |
-| Menu Option | 41 |
-| BM Display Name | S&T AUD Price File |
+| Menu Option | 2 |
+| BM Report | EOM92A |
 | Actual Extract Report | EOM92A |
 | Category | Pricing |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -3100,97 +1488,47 @@ Pricing reference report.
 
 ## Business Purpose
 
-Price list for Science & Technology titles in Australian Dollars.
+Provides Science & Technology AUD price file.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 53
-
-↓
-
-Option 41
-
-↓
-
-S&T AUD Price File
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-EOM92A
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+53 → 2
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-EOM92A_YYYYMMDD.xlsx
+EOM92A_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+EOM92A_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Pricing reference report.
-
----
-
-## Related Reports
-
-- EOM92
-- EOM92B
-- EOM92C
+Used as the AUD pricing reference for Science & Technology titles.
 
 ---
 
@@ -3201,13 +1539,12 @@ Pricing reference report.
 | Field | Value |
 |------|------|
 | Screen | 53 |
-| Menu Option | 42 |
-| BM Display Name | HS NZD Prices |
+| Menu Option | 3 |
+| BM Report | EOM92B |
 | Actual Extract Report | EOM92B |
 | Category | Pricing |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -3215,97 +1552,47 @@ Pricing reference report.
 
 ## Business Purpose
 
-Price list for Higher Education titles in New Zealand Dollars.
+Provides Higher Education NZD price data.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 53
-
-↓
-
-Option 42
-
-↓
-
-HS NZD Prices
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-EOM92B
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+53 → 3
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-EOM92B_YYYYMMDD.xlsx
+EOM92B_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+EOM92B_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Pricing reference report.
-
----
-
-## Related Reports
-
-- EOM92
-- EOM92A
-- EOM92C
+Used for Higher Education NZD pricing reference.
 
 ---
 
@@ -3316,13 +1603,12 @@ Pricing reference report.
 | Field | Value |
 |------|------|
 | Screen | 53 |
-| Menu Option | 43 |
-| BM Display Name | S&T NZD Prices |
+| Menu Option | 4 |
+| BM Report | EOM92C |
 | Actual Extract Report | EOM92C |
 | Category | Pricing |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -3330,97 +1616,49 @@ Pricing reference report.
 
 ## Business Purpose
 
-Price list for Science & Technology titles in New Zealand Dollars.
+Provides Science & Technology NZD price data.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 53
-
-↓
-
-Option 43
-
-↓
-
-S&T NZD Prices
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-EOM92C
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+53 → 4
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-EOM92C_YYYYMMDD.xlsx
+EOM92C_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+EOM92C_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Pricing reference report.
+Used as the NZD pricing reference for Science & Technology titles.
 
 ---
-
-## Related Reports
-
-- EOM92
-- EOM92A
-- EOM92B
 # 52. EOD06A – OP Report
 
 ## Report Information
@@ -3428,110 +1666,60 @@ Pricing reference report.
 | Field | Value |
 |------|------|
 | Screen | 54 |
-| Menu Option | 5 |
-| BM Display Name | OP Report |
+| Menu Option | 1 |
+| BM Report | EOD06A |
 | Actual Extract Report | EOD06A |
 | Category | Customer Service |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
-| Business Owner | Customer Service / Inventory Management |
+| Business Owner | Customer Service |
 
 ---
 
 ## Business Purpose
 
-Operational report used by Customer Service for order processing and customer enquiries.
+Provides the OP Report for Customer Service operations.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 54
-
-↓
-
-Option 5
-
-↓
-
-OP Report
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-EOD06A
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+54 → 1
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-EOD06A_YYYYMMDD.xlsx
+EOD06A_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+EOD06A_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Frequently used by Customer Service for operational monitoring.
-
----
-
-## Related Reports
-
-- E00103
-- E00110
+Used by Customer Service for operational reporting.
 
 ---
 
@@ -3542,110 +1730,60 @@ Frequently used by Customer Service for operational monitoring.
 | Field | Value |
 |------|------|
 | Screen | 54 |
-| Menu Option | 12 |
-| BM Display Name | OS Report |
+| Menu Option | 2 |
+| BM Report | E00103 |
 | Actual Extract Report | E00103 |
 | Category | Customer Service |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
-| Business Owner | Customer Service / Inventory Management |
+| Business Owner | Customer Service |
 
 ---
 
 ## Business Purpose
 
-Outstanding customer order report.
+Provides the OS Report for Customer Service operations.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 54
-
-↓
-
-Option 12
-
-↓
-
-OS Report
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00103
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+54 → 2
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00103_YYYYMMDD.xlsx
+E00103_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00103_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Supports Customer Service follow-up of outstanding orders.
-
----
-
-## Related Reports
-
-- EOD06A
-- E00110
+Supports Customer Service operational monitoring.
 
 ---
 
@@ -3656,113 +1794,62 @@ Supports Customer Service follow-up of outstanding orders.
 | Field | Value |
 |------|------|
 | Screen | 54 |
-| Menu Option | 13 |
-| BM Display Name | Unapproved |
+| Menu Option | 3 |
+| BM Report | E00110 |
 | Actual Extract Report | E00110 |
 | Category | Customer Service |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
-| Business Owner | Customer Service / Inventory Management |
+| Business Owner | Customer Service |
 
 ---
 
 ## Business Purpose
 
-Lists orders awaiting approval before further processing.
+Lists unapproved transactions requiring review.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 54
-
-↓
-
-Option 13
-
-↓
-
-Unapproved
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00110
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+54 → 3
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00110_YYYYMMDD.xlsx
+E00110_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00110_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Used to identify orders pending approval.
+Used to identify records pending approval.
 
 ---
-
-## Related Reports
-
-- EOD06A
-- E00103
-
----
-
 # 55. EOD12 – Shrinkwrap Report
 
 ## Report Information
@@ -3770,13 +1857,12 @@ Used to identify orders pending approval.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 7 |
-| BM Display Name | Shrinkwrap Report |
+| Menu Option | 1 |
+| BM Report | EOD12 |
 | Actual Extract Report | EOD12 |
 | Category | Operations |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -3784,96 +1870,50 @@ Used to identify orders pending approval.
 
 ## Business Purpose
 
-Operational report for shrinkwrap requirements and processing.
+Provides shrinkwrap requirements for warehouse operations.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 7
-
-↓
-
-Shrinkwrap Report
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-EOD12
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+90 → 1
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-EOD12_YYYYMMDD.xlsx
+EOD12_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+EOD12_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Supports warehouse operational activities.
+Supports warehouse packaging operations.
 
 ---
 
-## Related Reports
-
-- E00031A
-- E00082
 # 56. E00031A – Purchase Orders
 
 ## Report Information
@@ -3881,13 +1921,12 @@ Supports warehouse operational activities.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 8 |
-| BM Display Name | Purchase Orders |
+| Menu Option | 2 |
+| BM Report | E00031A |
 | Actual Extract Report | E00031A |
 | Category | Purchasing |
 | Status | Active |
-| Frequency | Daily |
-| Parameters | Refer to Bookmaster |
+| Frequency | As Required |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -3895,97 +1934,47 @@ Supports warehouse operational activities.
 
 ## Business Purpose
 
-Provides purchase order information for all active supplier purchase orders.
+Provides Purchase Order information for purchasing activities.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 8
-
-↓
-
-Purchase Orders
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00031A
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Daily
+90 → 2
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00031A_YYYYMMDD.xlsx
+E00031A_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00031A_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Primary purchasing report for supplier order monitoring.
-
----
-
-## Related Reports
-
-- E00082
-- E00082A
-- E00116
+Used for Purchase Order monitoring and procurement activities.
 
 ---
 
@@ -3996,13 +1985,12 @@ Primary purchasing report for supplier order monitoring.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 9 |
-| BM Display Name | NYP Order Report |
+| Menu Option | 3 |
+| BM Report | NYP Order Report |
 | Actual Extract Report | NYP Order Report |
 | Category | Publishing |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -4010,96 +1998,55 @@ Primary purchasing report for supplier order monitoring.
 
 ## Business Purpose
 
-Lists customer orders for titles that are Not Yet Published (NYP).
+Provides New Publication (NYP) order information.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 9
-
-↓
-
-NYP Order Report
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-NYP Order Report
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+90 → 3
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+```
+202507 202606
+```
+
+Example
+
+```
+From Jul-2025 to Jun-2026
+```
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-NYP_Order_Report_YYYYMMDD.xlsx
+NYP_Order_Report_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+NYP_Order_Report_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Supports publication planning and customer order visibility before publication.
-
----
-
-## Related Reports
-
-- E00102A
-- E00124
+Supports monitoring of New Publication orders across multiple accounting periods.
 
 ---
 
@@ -4110,13 +2057,12 @@ Supports publication planning and customer order visibility before publication.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 11 |
-| BM Display Name | PO Details |
+| Menu Option | 4 |
+| BM Report | E00082 |
 | Actual Extract Report | E00082 |
 | Category | Purchasing |
 | Status | Active |
-| Frequency | Daily |
-| Parameters | Purchase Order |
+| Frequency | As Required |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -4124,103 +2070,57 @@ Supports publication planning and customer order visibility before publication.
 
 ## Business Purpose
 
-Provides detailed information for individual purchase orders.
+Provides detailed Purchase Order information.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 11
-
-↓
-
-PO Details
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Enter Purchase Order
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00082
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Daily
+90 → 4
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-Purchase Order Number
+```
+202606 202606
+```
+
+Example
+
+```
+From Jun-2026 to Jun-2026
+```
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00082_YYYYMMDD.xlsx
+E00082_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00082_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Provides line-level purchase order details.
+Used to review Purchase Order details for the selected accounting period.
 
 ---
-
-## Related Reports
-
-- E00031A
-- E00082A
-
----
-
 # 59. E00082A – O/S PO's POD
 
 ## Report Information
@@ -4228,13 +2128,12 @@ Provides line-level purchase order details.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 12 |
-| BM Display Name | O/S PO's POD |
+| Menu Option | 5 |
+| BM Report | E00082A |
 | Actual Extract Report | E00082A |
 | Category | POD |
 | Status | Active |
-| Frequency | Daily |
-| Parameters | None |
+| Frequency | Weekly |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -4242,100 +2141,55 @@ Provides line-level purchase order details.
 
 ## Business Purpose
 
-Primary report containing all outstanding POD purchase orders awaiting fulfilment.
+Provides outstanding POD Purchase Orders awaiting fulfilment.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 12
-
-↓
-
-O/S PO's POD
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00082A
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Daily
+90 → 5
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-None
+```
+202606 202606
+```
+
+Example
+
+```
+From Jun-2026 to Jun-2026
+```
+
+---
+
+## Destination Staging Folder
+
+Weekly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00082A_YYYYMMDD.xlsx
+E00082A_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Production
+```
+E00082A_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Core operational report for POD order monitoring.
-
-One of the primary reports used by ORION.
-
----
-
-## Related Reports
-
-- E00046
-- E00047
-- E00082
-- LIGARE4
+Primary report for monitoring outstanding POD Purchase Orders.
 
 ---
 
@@ -4346,13 +2200,12 @@ One of the primary reports used by ORION.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 55 |
-| BM Display Name | Backorder & Fwd Order Summary |
+| Menu Option | 6 |
+| BM Report | Backorder & Fwd Order Summary |
 | Actual Extract Report | Backorder & Fwd Order Summary |
 | Category | Inventory |
 | Status | Active |
-| Frequency | Monthly |
-| Parameters | Refer to Bookmaster |
+| Frequency | As Required |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -4360,96 +2213,50 @@ One of the primary reports used by ORION.
 
 ## Business Purpose
 
-Summarises current backorders and forward orders for inventory review.
+Summarises customer backorders and forward orders.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 55
-
-↓
-
-Backorder & Fwd Order Summary
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-Backorder & Fwd Order Summary
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+90 → 6
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-Backorder_Forward_Order_Summary_YYYYMMDD.xlsx
+Backorder_Fwd_Order_Summary_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+Backorder_Fwd_Order_Summary_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Management summary report for inventory backorders and future demand.
+Used to review customer backorders and forward order commitments.
 
 ---
 
-## Related Reports
-
-- E00118
-- EOM96A
 # 61. EOM70C – STK Analysis HS
 
 ## Report Information
@@ -4457,13 +2264,12 @@ Management summary report for inventory backorders and future demand.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 60 |
-| BM Display Name | STK Analysis HS |
+| Menu Option | 7 |
+| BM Report | EOM70C |
 | Actual Extract Report | EOM70C |
 | Category | Inventory |
 | Status | Active |
-| Frequency | Monthly |
-| Parameters | Refer to Bookmaster |
+| Frequency | As Required |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -4471,96 +2277,47 @@ Management summary report for inventory backorders and future demand.
 
 ## Business Purpose
 
-Provides inventory stock analysis for Higher Education (HS) titles.
+Provides Higher Education stock analysis for inventory review.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 60
-
-↓
-
-STK Analysis HS
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-EOM70C
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+90 → 7
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-EOM70C_YYYYMMDD.xlsx
+EOM70C_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+EOM70C_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Used during inventory planning and stock analysis.
-
----
-
-## Related Reports
-
-- E00120B
-- SLOWSTK2
+Supports Higher Education inventory analysis.
 
 ---
 
@@ -4571,13 +2328,12 @@ Used during inventory planning and stock analysis.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 71 |
-| BM Display Name | Freight Calc |
+| Menu Option | 8 |
+| BM Report | E00075 |
 | Actual Extract Report | E00075 |
 | Category | Freight |
 | Status | Active |
-| Frequency | As Required |
-| Parameters | Refer to Bookmaster |
+| Frequency | On Demand |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -4585,98 +2341,49 @@ Used during inventory planning and stock analysis.
 
 ## Business Purpose
 
-Calculates estimated freight costs for shipments.
+Calculates freight charges for shipments.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 71
-
-↓
-
-Freight Calc
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00075
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+90 → 8
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Continuous
 
 ---
 
 ## File Naming Convention
 
 ```
-E00075_YYYYMMDD.xlsx
+E00075_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00075_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Supports freight estimation before shipment booking.
+Operational report used throughout the day for freight calculations.
 
 ---
-
-## Related Reports
-
-- E00075A
-
----
-
 # 63. E00075A – Freight Calc Detail
 
 ## Report Information
@@ -4684,13 +2391,12 @@ Supports freight estimation before shipment booking.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 72 |
-| BM Display Name | Freight Calc Detail |
+| Menu Option | 9 |
+| BM Report | E00075A |
 | Actual Extract Report | E00075A |
 | Category | Freight |
 | Status | Active |
-| Frequency | As Required |
-| Parameters | Refer to Bookmaster |
+| Frequency | On Demand |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -4698,95 +2404,47 @@ Supports freight estimation before shipment booking.
 
 ## Business Purpose
 
-Detailed freight calculation report.
+Provides detailed freight calculation information for shipment analysis.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 72
-
-↓
-
-Freight Calc Detail
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00075A
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+90 → 9
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Continuous
 
 ---
 
 ## File Naming Convention
 
 ```
-E00075A_YYYYMMDD.xlsx
+E00075A_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00075A_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Detailed version of Freight Calc.
-
----
-
-## Related Reports
-
-- E00075
+Detailed operational freight report used throughout the day.
 
 ---
 
@@ -4797,13 +2455,12 @@ Detailed version of Freight Calc.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 78 |
-| BM Display Name | Title Listing |
+| Menu Option | 10 |
+| BM Report | E00102 |
 | Actual Extract Report | E00102 |
 | Category | Master Data |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -4811,96 +2468,50 @@ Detailed version of Freight Calc.
 
 ## Business Purpose
 
-Master listing of titles maintained within Bookmaster.
+Provides title listing information for master data validation.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 78
-
-↓
-
-Title Listing
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00102
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+90 → 10
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00102_YYYYMMDD.xlsx
+E00102_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00102_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Reference report for title master data.
+Used to review title master information.
 
 ---
 
-## Related Reports
-
-- E00124
-- E00114
 # 65. E00102A – Publication Date Report
 
 ## Report Information
@@ -4908,13 +2519,12 @@ Reference report for title master data.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 85 |
-| BM Display Name | Publication Date Report |
+| Menu Option | 11 |
+| BM Report | E00102A |
 | Actual Extract Report | E00102A |
 | Category | Publishing |
 | Status | Active |
 | Frequency | As Required |
-| Parameters | Refer to Bookmaster |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -4922,97 +2532,47 @@ Reference report for title master data.
 
 ## Business Purpose
 
-Provides publication dates for titles maintained within Bookmaster.
+Provides publication date information for titles.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 85
-
-↓
-
-Publication Date Report
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00102A
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+90 → 11
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00102A_YYYYMMDD.xlsx
+E00102A_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00102A_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Used to identify publication dates for inventory planning and purchasing.
-
----
-
-## Related Reports
-
-- E00102
-- E00124
-- NYP Order Report
+Reference report for publication date validation.
 
 ---
 
@@ -5023,13 +2583,12 @@ Used to identify publication dates for inventory planning and purchasing.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 86 |
-| BM Display Name | Title Master File |
+| Menu Option | 12 |
+| BM Report | E00124 |
 | Actual Extract Report | E00124 |
 | Category | Master Data |
 | Status | Active |
-| Frequency | As Required |
-| Parameters | Refer to Bookmaster |
+| Frequency | Weekly |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -5037,100 +2596,49 @@ Used to identify publication dates for inventory planning and purchasing.
 
 ## Business Purpose
 
-Master file containing bibliographic and inventory attributes for all titles.
+Provides the latest Title Master data.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 86
-
-↓
-
-Title Master File
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00124
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+90 → 12
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Weekly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00124_YYYYMMDD.xlsx
+E00124_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00124_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Primary reference report for title master information.
+Weekly snapshot used to capture and maintain Title Master data.
 
 ---
-
-## Related Reports
-
-- E00102
-- E00114
-- E00102A
-
----
-
 # 67. LIGARE4 – SOHQ by Location
 
 ## Report Information
@@ -5138,13 +2646,12 @@ Primary reference report for title master information.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 87 |
-| BM Display Name | SOHQ by Location |
+| Menu Option | 13 |
+| BM Report | LIGARE4 |
 | Actual Extract Report | LIGARE4 |
 | Category | Warehouse |
 | Status | Active |
-| Frequency | Hourly (Automation) |
-| Parameters | None |
+| Frequency | Daily *(Currently Hourly during ORION testing)* |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -5152,112 +2659,49 @@ Primary reference report for title master information.
 
 ## Business Purpose
 
-Provides Stock On Hand Quantity by warehouse location.
-
-Primary warehouse inventory report used for operational stock visibility.
+Provides Stock On Hand Quantity (SOHQ) by warehouse location.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 87
-
-↓
-
-SOHQ by Location
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-LIGARE4
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Hourly
+90 → 13
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-No parameters required.
+None
+
+---
+
+## Destination Staging Folder
+
+Daily
 
 ---
 
 ## File Naming Convention
 
-Manual
-
 ```
-LIGARE4_YYYYMMDD.xlsx
+LIGARE4_dd-MMM-yy_HHmmss.xlsx
 ```
 
-Automation
+Example
 
 ```
-LIGARE4_YYYYMMDD_HHMMSS.xlsx
+LIGARE4_30-Jun-26_091530.xlsx
 ```
-
----
-
-## Automation Status
-
-Production
-
-Runs automatically through Windows Task Scheduler using the ORION extraction framework.
 
 ---
 
 ## Business Notes
 
-Current production automation extracts this report silently at scheduled intervals.
-
-Primary warehouse stock report used by ORION.
-
----
-
-## Related Reports
-
-- E00113
-- E00120B
-- E00082A
-- E00047
+- Currently extracted every 5 minutes during ORION testing.
+- Planned to run once daily after Amazon and Booktopia automation is implemented.
+- Primary warehouse stock report for Ligare inventory.
 
 ---
 
@@ -5268,13 +2712,12 @@ Primary warehouse stock report used by ORION.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 88 |
-| BM Display Name | Stock POD Titles |
+| Menu Option | 14 |
+| BM Report | E00120C |
 | Actual Extract Report | E00120C |
 | Category | POD |
 | Status | Active |
-| Frequency | As Required |
-| Parameters | Refer to Bookmaster |
+| Frequency | Weekly |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -5282,97 +2725,50 @@ Primary warehouse stock report used by ORION.
 
 ## Business Purpose
 
-Lists POD titles currently held in stock.
+Provides Stock On Hand details for POD titles.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 88
-
-↓
-
-Stock POD Titles
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00120C
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+90 → 14
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Weekly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00120C_YYYYMMDD.xlsx
+E00120C_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00120C_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Supports POD stock analysis and planning.
+Weekly snapshot used to monitor POD stock availability.
 
 ---
 
-## Related Reports
-
-- E00046
-- E00047
-- LIGARE4
 # 69. SLOWSTK2 – Slow Moving Stock
 
 ## Report Information
@@ -5380,13 +2776,12 @@ Supports POD stock analysis and planning.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 89 |
-| BM Display Name | Slow Moving Stock |
+| Menu Option | 15 |
+| BM Report | SLOWSTK2 |
 | Actual Extract Report | SLOWSTK2 |
 | Category | Inventory |
 | Status | Active |
-| Frequency | Monthly |
-| Parameters | Refer to Bookmaster |
+| Frequency | Weekly |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -5394,99 +2789,47 @@ Supports POD stock analysis and planning.
 
 ## Business Purpose
 
-Identifies slow-moving inventory for stock optimization, purchasing decisions and inventory review.
+Identifies slow moving inventory based on historical sales.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 89
-
-↓
-
-Slow Moving Stock
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-SLOWSTK2
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Monthly
+90 → 15
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Weekly
 
 ---
 
 ## File Naming Convention
 
 ```
-SLOWSTK2_YYYYMMDD.xlsx
+SLOWSTK2_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+SLOWSTK2_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Supports inventory ageing analysis and purchasing decisions.
-
-Frequently used during inventory review and slow-moving stock exercises.
-
----
-
-## Related Reports
-
-- EOM70C
-- E00120B
-- LIGARE4
+Weekly inventory review report used for stock optimisation and ageing analysis.
 
 ---
 
@@ -5497,13 +2840,12 @@ Frequently used during inventory review and slow-moving stock exercises.
 | Field | Value |
 |------|------|
 | Screen | 90 |
-| Menu Option | 84 |
-| BM Display Name | Titles Stock On Hand |
+| Menu Option | 16 |
+| BM Report | E00120B |
 | Actual Extract Report | E00120B |
 | Category | Inventory |
 | Status | Active |
-| Frequency | Daily |
-| Parameters | Refer to Bookmaster |
+| Frequency | As Required |
 | Output Format | Excel |
 | Business Owner | Inventory Management |
 
@@ -5511,302 +2853,117 @@ Frequently used during inventory review and slow-moving stock exercises.
 
 ## Business Purpose
 
-Provides current stock on hand by title.
-
-Used for inventory planning, purchasing, stock verification and operational reporting.
+Provides Stock On Hand information for all inventory titles.
 
 ---
 
 ## Navigation
 
-Bookmaster
-
-↓
-
-Screen 90
-
-↓
-
-Option 84
-
-↓
-
-Titles Stock On Hand
-
-↓
-
-Run Report
-
----
-
-## Extraction Route
-
-Bookmaster
-
-↓
-
-Run Report
-
-↓
-
-IBM Data Transfer
-
-↓
-
-Report Name
-
 ```
-E00120B
-```
-
-↓
-
-Excel
-
-↓
-
-Destination Folder
-
-```
-BookMaster\Daily
+90 → 16
 ```
 
 ---
 
-## Parameters
+## Report Input
 
-To be documented.
+None
+
+---
+
+## Destination Staging Folder
+
+Monthly
 
 ---
 
 ## File Naming Convention
 
 ```
-E00120B_YYYYMMDD.xlsx
+E00120B_dd-MMM-yy_HHmmss.xlsx
 ```
 
----
+Example
 
-## Automation Status
-
-Supported
+```
+E00120B_30-Jun-26_091530.xlsx
+```
 
 ---
 
 ## Business Notes
 
-Primary inventory stock report for title-level stock visibility.
-
-Often used together with LIGARE4 to compare warehouse stock against title stock.
-
-Supports purchasing, replenishment and inventory analysis.
+Primary Stock On Hand report used for inventory review and reconciliation.
 
 ---
-
-## Related Reports
-
-- LIGARE4
-- SLOWSTK2
-- EOM70C
-- E00113
-
----
-
 # Future Reports
 
-All newly introduced Bookmaster reports should be appended below without renumbering existing reports.
+This section is reserved for future IBM Bookmaster reports that are introduced after the initial implementation of ORION.
 
-## 71.
-
-Report Name
-
-Status
-
-Pending Documentation
-
----
-
-## 72.
-
-Report Name
-
-Status
-
-Pending Documentation
-
----
-
-## 73.
-
-Report Name
-
-Status
-
-Pending Documentation
-
----
-
-## 74.
-
-Report Name
-
-Status
-
-Pending Documentation
-
----
-
-## 75.
-
-Report Name
-
-Status
-
-Pending Documentation
-
----
-
-(Continue numbering sequentially as new reports are introduced.)
-
----
-
-**End of Bookmaster_Reports.md**
-
-# Suggested Future Enhancements
-
-The following improvements are planned for future versions of this knowledge base.
-
----
-
-## Report Parameter Matrix
-
-Document every parameter required for every report.
-
-Example
-
-| Report | Parameter | Mandatory | Example |
-|---------|-----------|-----------|---------|
-| E00082 | Purchase Order | Yes | P123456 |
-| E00112A | Accounting Period | Yes | 202607 |
-| LIGARE4 | None | No | - |
-
----
-
-## IBM Data Transfer Mapping
-
-For every report document:
-
-- Data Transfer Name
-- Saved DTF file
-- Excel Template
-- Destination Folder
-
----
-
-## Extraction Route Screenshots
-
-Include screenshots for:
-
-- Bookmaster navigation
-- Parameter screen
-- Report output
-- IBM Data Transfer
-- Final Excel output
-
----
-
-## Report Dependency Matrix
-
-Document reports that are commonly used together.
-
-Example
-
-| Primary Report | Supporting Reports |
-|---------------|--------------------|
-| E00047 | E00046, E00082A, LIGARE4 |
-| LIGARE4 | E00120B, SLOWSTK2 |
-| E00082A | E00047, E00046 |
-
----
-
-## Automation Readiness
-
-Track automation maturity for every report.
-
-| Status | Meaning |
-|---------|---------|
-| Manual | Manual extraction only |
-| Supported | Ready for automation |
-| Testing | Automation under testing |
-| Production | Fully automated |
-
----
-
-## Extraction History
-
-Maintain version history whenever:
-
-- Parameters change
-- Report numbers change
-- Business purpose changes
-- Folder locations change
-- Automation status changes
-
----
-
-## Known Business Exceptions
-
-Document exceptions such as:
-
-- Report uses different Data Transfer report number.
-- Report requires multiple executions.
-- Report has hidden parameters.
-- Report is display-only.
-- Report is obsolete but retained.
-
----
-
-## Validation Checklist
-
-Before automating any new report:
-
-- Verify BM Display Name.
-- Verify Actual Extract Report Number.
-- Verify parameters.
-- Verify IBM Data Transfer extraction.
-- Verify Excel output.
-- Verify destination folder.
-- Verify naming convention.
-- Validate data against Bookmaster.
-
----
-
-## Maintenance Guidelines
-
-When a new Bookmaster report is introduced:
-
-1. Add it to the end of this document.
-2. Assign the next sequential report number.
-3. Record navigation path.
-4. Record Actual Extract Report Number.
-5. Document extraction route.
-6. Record destination folder.
-7. Record automation status.
-8. Record business purpose.
-9. Cross-reference related reports.
-10. Update Bookmaster.md report inventory.
+New reports should follow the standard documentation template defined in this document.
 
 ---
 
 # Revision History
 
 | Version | Date | Author | Description |
-|----------|------|--------|-------------|
-| 1.0 | Jul-2026 | Krishna Kumar | Initial report framework created |
-| 1.1 | TBD | Krishna Kumar | Report parameter completion |
-| 1.2 | TBD | Krishna Kumar | Extraction screenshots |
-| 1.3 | TBD | Krishna Kumar | Complete automation readiness |
+|---------|------|--------|-------------|
+| 1.0 | Jul-2026 | Krishna Kumar | Initial Bookmaster report catalogue created. |
+| 2.0 | Jul-2026 | Krishna Kumar | Complete redesign of the document with simplified report structure, staging strategy and standardized report template. |
 
 ---
 
-# End of Document
+# Change Log
+
+## Version 2.0
+
+### Added
+
+- Standard Report Extraction Process
+- Report Staging Strategy
+- Staging Folder Structure
+- Report Catalogue
+- Standard Report Template
+- Report Input Standards
+- Standard File Naming Convention
+
+### Updated
+
+- Simplified report documentation structure.
+- Added Actual Extract Report to Report Information.
+- Standardized Navigation format.
+- Standardized Report Input section.
+- Introduced Destination Staging Folder.
+- Standardized File Naming Convention.
+
+### Removed
+
+- Automation Compatibility
+- Expected Runtime
+- Completion Check
+- Known Issues
+- Automation Notes
+- Automation Status
+- Related Reports
+
+Automation-specific implementation has been moved to **ORION.md**.
+
+---
+
+# Future Enhancements
+
+The following enhancements are planned for future versions of this document.
+
+- Additional Bookmaster reports.
+- Report screenshots.
+- Sample report outputs.
+- Cross-reference to Bookmaster.md.
+- Cross-reference to ORION.md.
+- Default ORION report schedules.
+- Report ownership matrix.
+- Business process mapping.
+- Data dictionary for each report.
+
+---
+
+**End of Document**
