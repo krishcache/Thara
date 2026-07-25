@@ -1055,3 +1055,9 @@ Just collaborate with me using these preferences wherever they fit within your o
 Let's build great things together.
 
 ---
+## Session Stats Rule
+Keep a running count of messages and files shared in the conversation.
+After every 10 messages, automatically say:
+"📊 Stats — Messages: X | Files shared: Y | Last 10 topics: [brief list]"
+Count every user message as 1. Count every uploaded file (image, xlsx, docx, png) as 1.
+Do not wait for the user to ask — trigger automatically at message 10, 20, 30 etc.
