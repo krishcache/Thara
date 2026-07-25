@@ -5671,3 +5671,142 @@ Pending Documentation
 ---
 
 **End of Bookmaster_Reports.md**
+
+# Suggested Future Enhancements
+
+The following improvements are planned for future versions of this knowledge base.
+
+---
+
+## Report Parameter Matrix
+
+Document every parameter required for every report.
+
+Example
+
+| Report | Parameter | Mandatory | Example |
+|---------|-----------|-----------|---------|
+| E00082 | Purchase Order | Yes | P123456 |
+| E00112A | Accounting Period | Yes | 202607 |
+| LIGARE4 | None | No | - |
+
+---
+
+## IBM Data Transfer Mapping
+
+For every report document:
+
+- Data Transfer Name
+- Saved DTF file
+- Excel Template
+- Destination Folder
+
+---
+
+## Extraction Route Screenshots
+
+Include screenshots for:
+
+- Bookmaster navigation
+- Parameter screen
+- Report output
+- IBM Data Transfer
+- Final Excel output
+
+---
+
+## Report Dependency Matrix
+
+Document reports that are commonly used together.
+
+Example
+
+| Primary Report | Supporting Reports |
+|---------------|--------------------|
+| E00047 | E00046, E00082A, LIGARE4 |
+| LIGARE4 | E00120B, SLOWSTK2 |
+| E00082A | E00047, E00046 |
+
+---
+
+## Automation Readiness
+
+Track automation maturity for every report.
+
+| Status | Meaning |
+|---------|---------|
+| Manual | Manual extraction only |
+| Supported | Ready for automation |
+| Testing | Automation under testing |
+| Production | Fully automated |
+
+---
+
+## Extraction History
+
+Maintain version history whenever:
+
+- Parameters change
+- Report numbers change
+- Business purpose changes
+- Folder locations change
+- Automation status changes
+
+---
+
+## Known Business Exceptions
+
+Document exceptions such as:
+
+- Report uses different Data Transfer report number.
+- Report requires multiple executions.
+- Report has hidden parameters.
+- Report is display-only.
+- Report is obsolete but retained.
+
+---
+
+## Validation Checklist
+
+Before automating any new report:
+
+- Verify BM Display Name.
+- Verify Actual Extract Report Number.
+- Verify parameters.
+- Verify IBM Data Transfer extraction.
+- Verify Excel output.
+- Verify destination folder.
+- Verify naming convention.
+- Validate data against Bookmaster.
+
+---
+
+## Maintenance Guidelines
+
+When a new Bookmaster report is introduced:
+
+1. Add it to the end of this document.
+2. Assign the next sequential report number.
+3. Record navigation path.
+4. Record Actual Extract Report Number.
+5. Document extraction route.
+6. Record destination folder.
+7. Record automation status.
+8. Record business purpose.
+9. Cross-reference related reports.
+10. Update Bookmaster.md report inventory.
+
+---
+
+# Revision History
+
+| Version | Date | Author | Description |
+|----------|------|--------|-------------|
+| 1.0 | Jul-2026 | Krishna Kumar | Initial report framework created |
+| 1.1 | TBD | Krishna Kumar | Report parameter completion |
+| 1.2 | TBD | Krishna Kumar | Extraction screenshots |
+| 1.3 | TBD | Krishna Kumar | Complete automation readiness |
+
+---
+
+# End of Document
