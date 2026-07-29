@@ -1,0 +1,147 @@
+# scripts_master.md
+## NextOps Automation — Script Registry
+**Elsevier Australia | Operations — Inventory Management**
+Last Updated: 29-Jul-2026 | Maintained by: Krishna Kumar
+
+---
+
+> This file is the living registry of all automation scripts built for NextOps.
+> Update this file whenever a new script is created, modified, or deprecated.
+> Format: one entry per script, in order of creation date.
+
+---
+
+## SOH Consolidator Suite
+
+### 1. bkt_consolidator.py
+| Field | Detail |
+|---|---|
+| **Version** | 3.0 |
+| **Status** | ✅ Active |
+| **Purpose** | Consolidates daily Booktopia PAD (Purchase Advice Data) CSV files into Booktopia_SOH.xlsx |
+| **Location** | `...\SOH\Scripts\bkt_consolidator.py` |
+| **Launcher** | `run_bkt.vbs` |
+| **Input** | `YYYYMMDD_BKT.csv` — pipe or comma delimited, from Stage\ folder |
+| **Output** | `Booktopia_SOH.xlsx` — one column per day, latest in col B |
+| **SOH Column** | `stock_on_hand` |
+| **Cleanup** | Deletes all `YYYYMMDD_BKT.csv` and `.xlsx` from Stage |
+| **Dependencies** | pandas, openpyxl |
+| **JSON State** | `bkt_consolidator_state.json` |
+| **Created** | 29-Jul-2026 |
+| **Last Updated** | 29-Jul-2026 |
+
+**Notes:**
+- Auto-detects delimiter (pipe or comma) on each file
+- Strips column name whitespace to handle format variations
+- Date extracted from filename (not CSV content) for reliability
+- Overwrites existing date column if same date re-processed
+
+---
+
+### 2. amz_consolidator.py
+| Field | Detail |
+|---|---|
+| **Version** | 1.0 |
+| **Status** | ✅ Active |
+| **Purpose** | Consolidates Amazon QOH (Quantity on Hand) files into Amazon_SOH.xlsx |
+| **Location** | `...\SOH\Scripts\amz_consolidator.py` |
+| **Launcher** | `run_amz.vbs` |
+| **Input Format 1** | `Amazon QOH DDMMYY.xlsx` — 3-column simple format |
+| **Input Format 2** | `Inventory_ASIN_Sourcing_Retail_Australia_Custom_DD-MM-YYYY_DD-MM-YYYY.xlsx` — VC dump |
+| **Output** | `Amazon_SOH.xlsx` — one column per snapshot, latest in col B |
+| **SOH Column** | `Sellable On Hand Units` |
+| **Cleanup** | Deletes all matching Amazon and Inventory_ASIN files from Stage |
+| **Dependencies** | pandas, openpyxl |
+| **JSON State** | `amz_consolidator_state.json` |
+| **Created** | 29-Jul-2026 |
+| **Last Updated** | 29-Jul-2026 |
+
+**Notes:**
+- Auto-detects file format (simple 3-col vs VC dump)
+- VC dump format: skips metadata header row, reads from row 1
+- Handles duplicate ISBNs within a file — keeps highest SOH value
+- Date extracted from filename for both formats
+
+---
+
+### 3. elsevier_consolidator.py
+| Field | Detail |
+|---|---|
+| **Version** | 1.0 |
+| **Status** | ✅ Active |
+| **Purpose** | Fetches LIGARE4 (SOHQ by location) directly from AS400, consolidates into Elsevier_SOH.xlsx |
+| **Location** | `...\SOH\Scripts\elsevier_consolidator.py` |
+| **Launcher** | `run_elsevier.vbs` |
+| **Input** | AS400 — `Elsevier.ligare4` table (direct ODBC, no manual file needed) |
+| **Output** | `Elsevier_SOH.xlsx` — one column per day, latest in col B |
+| **SOH Column** | `VNSOHQ` grouped by `VNI` (ISBN) |
+| **Exclusion** | Rows where `VNLOC` = DAMAGED are excluded |
+| **Cleanup** | Deletes `LIGARE4_*.xlsx` raw extracts from Stage |
+| **Dependencies** | pandas, openpyxl, pyodbc |
+| **Credentials** | Reads from `bm_config.enc` — fully independent of ORION version |
+| **JSON State** | `elsevier_consolidator_state.json` |
+| **Created** | 29-Jul-2026 |
+| **Last Updated** | 29-Jul-2026 |
+
+**Notes:**
+- Only script that connects directly to AS400 — no manual file preparation
+- Credential key: `BM_ELSEVIER_AU_2026` (XOR + base64 encryption)
+- bm_config.enc path: `...\Reports\BookMaster\Scripts\bm_config.enc`
+- Version-independent: works regardless of ORION version upgrades
+- Overwrites today's date column if run multiple times on same day (safe for manual + scheduled runs)
+- Legacy sheet `BM-SOH` auto-renamed to `Elsevier-SOH` on first run
+
+---
+
+### 4. nielsen_consolidator.py
+| Field | Detail |
+|---|---|
+| **Version** | 3.0 |
+| **Status** | ✅ Active |
+| **Purpose** | Consolidates Nielsen ABM Pd Chart data into Master_Neilson.xlsx |
+| **Location** | `...\Nielsen\Scripts\nielsen_consolidator.py` |
+| **Launcher** | `run_nielsen.vbs` |
+| **Input** | `ABM Pd Chart*.xlsx` — Medicine and Others categories (from Elna Schonfeldt monthly) |
+| **Output** | `Master_Neilson.xlsx` — ISBN + 6 year columns (2021–2026) |
+| **Volume Column** | `YTD Volume` (2026, 2024) or `Volume` (2025, 2023–2021) |
+| **Cleanup** | Deletes all `ABM Pd Chart*.xlsx` from Stage |
+| **Dependencies** | pandas, openpyxl |
+| **JSON State** | `nielsen_consolidator_state.json` |
+| **Created** | 29-Jul-2026 |
+| **Last Updated** | 29-Jul-2026 |
+
+**Notes:**
+- Fresh build: reads all 6 year sheets → fully populated master from scratch
+- Amend mode: reads current year only → updates current year column only
+- Handles different header rows per year sheet (row 1 for 2024–2026, row 4 for 2021–2023)
+- Duplicate ISBNs across Medicine + Others files → keeps higher value
+- Metadata (data_as_on, updated_on) stored in JSON only — not in Excel
+- Master format: ISBN | 2026 | 2025 | 2024 | 2023 | 2022 | 2021 (no Type column)
+
+---
+
+## VBS Launchers
+
+| File | Script | Purpose |
+|---|---|---|
+| `run_bkt.vbs` | `bkt_consolidator.py` | Silent launcher — SOH\Scripts\ |
+| `run_amz.vbs` | `amz_consolidator.py` | Silent launcher — SOH\Scripts\ |
+| `run_elsevier.vbs` | `elsevier_consolidator.py` | Silent launcher — SOH\Scripts\ |
+| `run_nielsen.vbs` | `nielsen_consolidator.py` | Silent launcher — Nielsen\Scripts\ |
+
+All VBS launchers use `pythonw.exe` with `WScript.Shell` — window hidden, process detached.
+
+---
+
+## Amendment Log
+
+| Date | Script | Change | By |
+|---|---|---|---|
+| 29-Jul-2026 | All 4 | Initial build and validation | KK |
+
+---
+
+> **How to update this file:**
+> When a new script is created → add a new section above the Amendment Log.
+> When an existing script is updated → update the Version and Last Updated fields, add a row to Amendment Log.
+> When a script is deprecated → change Status to ❌ Deprecated and add deprecation date and reason in Notes.
